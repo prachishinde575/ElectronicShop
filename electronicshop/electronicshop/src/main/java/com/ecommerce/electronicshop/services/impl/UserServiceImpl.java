@@ -4,6 +4,7 @@ import com.ecommerce.electronicshop.dtos.UserDto;
 import com.ecommerce.electronicshop.entities.User;
 import com.ecommerce.electronicshop.repositories.UserRepository;
 import com.ecommerce.electronicshop.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,10 @@ public class UserServiceImpl implements UserService {      // ALt+Enter   click 
 
 @Autowired
 private UserRepository userRepository;
+
+@Autowired
+private ModelMapper mapper;
+
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -65,7 +70,7 @@ private UserRepository userRepository;
     }
 
     @Override
-    public UserDto getUserbyId(String userId) {
+    public UserDto getUserById(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not found with given id!"));
 
         return entityToDto(user);
@@ -73,7 +78,7 @@ private UserRepository userRepository;
 
 
     @Override
-    public UserDto getUserbyEmail(String email) {
+    public UserDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with given email id and password !"));
         return entityToDto(user);
     }
@@ -89,31 +94,31 @@ private UserRepository userRepository;
 
     private UserDto entityToDto(User savedUser) {
 
-    UserDto userDto =UserDto.builder()
-            .userId(savedUser.getUserId())
-            .name(savedUser.getName())
-            .email(savedUser.getEmail())
-            .password(savedUser.getPassword())
-            .about(savedUser.getAbout())
-            .gender(savedUser.getGender())
-            .imageName(savedUser.getImageName()).build();
+//    UserDto userDto =UserDto.builder()
+//            .userId(savedUser.getUserId())
+//            .name(savedUser.getName())
+//            .email(savedUser.getEmail())
+//            .password(savedUser.getPassword())
+//            .about(savedUser.getAbout())
+//            .gender(savedUser.getGender())
+//            .imageName(savedUser.getImageName()).build();
 
-    return userDto;
+    return mapper.map(savedUser, UserDto.class);
     }
 
     private User dtoToEntity(UserDto userDto) {
 
-       User user = User.builder()
-                .userId(userDto.getUserId())
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-               .password(userDto.getPassword())
-               .about(userDto.getAbout())
-               .gender(userDto.getGender())
-               .imageName(userDto.getImageName())
-               .build();
+//       User user = User.builder()
+//                .userId(userDto.getUserId())
+//                .name(userDto.getName())
+//                .email(userDto.getEmail())
+//               .password(userDto.getPassword())
+//               .about(userDto.getAbout())
+//               .gender(userDto.getGender())
+//               .imageName(userDto.getImageName())
+//               .build();
 
-        return user;
+        return mapper.map(userDto,User.class);
     }
 
 }

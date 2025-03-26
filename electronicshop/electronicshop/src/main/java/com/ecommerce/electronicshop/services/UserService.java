@@ -29,12 +29,12 @@ public interface UserService {
 
 
     //get single user by id
-    UserDto getUserbyId(String userId);
+    UserDto getUserById(String userId);
 
 
 
     //get single user by email
-    UserDto getUserbyEmail(String email);
+    UserDto getUserByEmail(String email);
 
 
     //search user
