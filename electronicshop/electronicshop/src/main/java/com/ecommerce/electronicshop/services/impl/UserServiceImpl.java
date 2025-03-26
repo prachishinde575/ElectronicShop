@@ -36,26 +36,40 @@ private UserRepository userRepository;
 
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        return null;
+
+        User user =userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not found with given id! "));
+        user.setName(userDto.getName());
+        // email update
+        user.setAbout(userDto.getAbout());
+        user.setGender(user.getGender());
+        user.setPassword(userDto.getPassword());
+        user.setImageName(userDto.getImageName());
+        //Save data
+        User updateduser = userRepository.save(user);
+        UserDto updatedDto = entityToDto(updateduser);
+        return updatedDto;
     }
 
     @Override
     public void deleteUser(String userId) {
-
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not found with given id!"));
+        //delete user
+        userRepository.delete(user);
     }
 
-
+    @Override
     public List<UserDto> getAllUser() {
         List<User> users=userRepository.findAll();
         List<UserDto> dtoList = users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
-
         return dtoList;
     }
 
     @Override
     public UserDto getUserbyId(String userId) {
-        return null;
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not found with given id!"));
+        return entityToDto(user);
     }
+
 
     @Override
     public UserDto getUserbyEmail(String email) {
@@ -67,8 +81,6 @@ private UserRepository userRepository;
     public List<UserDto> searchUser(String keyword) {
         List<User> users = userRepository.findByNameContaning(keyword);
         List<UserDto> dtoList = users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
-
-
         return dtoList;
     }
 
