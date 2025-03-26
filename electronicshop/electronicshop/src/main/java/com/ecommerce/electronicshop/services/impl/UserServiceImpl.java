@@ -67,6 +67,7 @@ private UserRepository userRepository;
     @Override
     public UserDto getUserbyId(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not found with given id!"));
+
         return entityToDto(user);
     }
 
