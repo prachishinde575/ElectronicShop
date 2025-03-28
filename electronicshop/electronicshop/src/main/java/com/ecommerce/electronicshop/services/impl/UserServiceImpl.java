@@ -85,7 +85,7 @@ private ModelMapper mapper;
 
     @Override
     public List<UserDto> searchUser(String keyword) {
-        List<User> users = userRepository.findByNameContaning(keyword);
+        List<User> users = userRepository.findByNameContaining(keyword);
         List<UserDto> dtoList = users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
         return dtoList;
     }

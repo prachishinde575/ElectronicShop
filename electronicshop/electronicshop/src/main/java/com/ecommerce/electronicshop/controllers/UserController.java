@@ -1,6 +1,7 @@
 package com.ecommerce.electronicshop.controllers;
 
 
+import com.ecommerce.electronicshop.dtos.ApiResponseMessage;
 import com.ecommerce.electronicshop.dtos.UserDto;
 import com.ecommerce.electronicshop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,13 @@ public class UserController {
 
 // delete
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(
-            @PathVariable String userId)
+    public ResponseEntity<ApiResponseMessage> deleteUser(@PathVariable String userId)
+
     {
         userService.deleteUser(userId);
-            return new ResponseEntity<>("User is deleted successfully", HttpStatus.OK);
+        ApiResponseMessage message = ApiResponseMessage.builder().message("User is deleted successfully").success(true).status(OK).build();
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 // get all
@@ -64,7 +67,7 @@ public class UserController {
     }
 
 // get by email
-    @GetMapping("/email/{email)")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
 }
