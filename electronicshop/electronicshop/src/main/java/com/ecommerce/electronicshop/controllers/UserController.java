@@ -80,13 +80,4 @@ public class UserController {
         return new ResponseEntity<>(userService.searchUser(keywords), HttpStatus.OK);
 }
 
-
-
-
-
-
-
-
-
-
 }
