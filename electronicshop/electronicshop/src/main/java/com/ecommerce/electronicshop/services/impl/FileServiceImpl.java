@@ -7,8 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
@@ -18,32 +19,43 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public String uploadImage(MultipartFile file, String path) {
+    public String uploadFile(MultipartFile file, String path) throws IOException {
 
         String originalFilename = file.getOriginalFilename();
         logger.info("Filename:{}", originalFilename);
+
         String filename = UUID.randomUUID().toString();
         String extention = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileNameWithExtention = filename + extention;
-        String fullPathWithFileName = path + File.separator + fileNameWithExtention;
+        String fullPathWithFileName = path +  fileNameWithExtention;
 
-        if (extention.equalsIgnoreCase(".png") || extention.equalsIgnoreCase(".jpg") || extention.equalsIgnoreCase(".jpeg")){
+
+        logger.info("full image path:", fullPathWithFileName);
+        if (extention.equalsIgnoreCase(".png") || extention.equalsIgnoreCase(".jpg") || extention.equalsIgnoreCase(".jpeg")) {
 
             // file save
+            logger.info("file extention is {}", extention);
             File folder = new File(path);
 
-            if(folder.exists())
+            if (folder.exists()) {
 
-
-
-        } else{
-        throw new BadApiRequest("file with this "+ extention + "not allowes!");
-
-        return "";
+                //create the folder
+                folder.mkdirs();
+            }
+// upload
+            Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
+            return fileNameWithExtention;
+        } else {
+            throw new BadApiRequest("file with this " + extention + "not allowes!");
+        }
     }
 
     @Override
-    public InputStream getReource(String path, String Name) {
-        return null;
+    public InputStream getResource(String Path, String Name) throws FileNotFoundException {
+        String fullPath = Path + File.separator + Name;
+        InputStream inputStream = new FileInputStream(fullPath);
+        return inputStream;
     }
+
+
 }
