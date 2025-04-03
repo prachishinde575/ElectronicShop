@@ -4,6 +4,7 @@ import com.ecommerce.electronicshop.dtos.PageableResponse;
 import com.ecommerce.electronicshop.dtos.UserDto;
 import com.ecommerce.electronicshop.entities.User;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
@@ -21,7 +22,7 @@ public interface UserService {
 
 
     //delete
-    void deleteUser(String userId);
+    void deleteUser(String userId) throws IOException;
 
 
 

@@ -1,6 +1,6 @@
 package com.ecommerce.electronicshop.services.impl;
 
-import com.ecommerce.electronicshop.exceptions.BadApiRequest;
+import com.ecommerce.electronicshop.exceptions.BadApiRequestException;
 import com.ecommerce.electronicshop.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class FileServiceImpl implements FileService {
             logger.info("file extention is {}", extention);
             File folder = new File(path);
 
-            if (folder.exists()) {
+            if (!folder.exists()) {
 
                 //create the folder
                 folder.mkdirs();
@@ -46,7 +46,7 @@ public class FileServiceImpl implements FileService {
             Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
             return fileNameWithExtention;
         } else {
-            throw new BadApiRequest("file with this " + extention + "not allowes!");
+            throw new BadApiRequestException("file with this " + extention + " not allowed!");
         }
     }
 
