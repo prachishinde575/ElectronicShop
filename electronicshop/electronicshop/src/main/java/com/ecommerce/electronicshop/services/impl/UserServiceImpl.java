@@ -45,6 +45,8 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
     public UserDto createUser(UserDto userDto) {
 
+        logger.info("Creating new user with email: {}", userDto.getEmail());
+
         // generate unique id in string format
        String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
@@ -62,6 +64,8 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
 
+        logger.info("Updating user with ID: {}", userId);
+
         User user =userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not found with given id! "));
         user.setName(userDto.getName());
         // email update
@@ -77,6 +81,8 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public void deleteUser(String userId)  {
+        logger.info("Deleting user with ID: {}", userId);
+
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not found with given id!"));
 //        user.getImageName()
         // delete user profile
@@ -102,6 +108,7 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
     public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
+        logger.info("Fetching all users: pageNumber={}, pageSize={}, sortBy={}, sortDir={}", pageNumber, pageSize, sortBy, sortDir);
 
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending()) ;
 
@@ -122,6 +129,9 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public UserDto getUserById(String userId) {
+
+        logger.info("Fetching user by ID: {}", userId);
+
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User Not found with given id!"));
 
         return entityToDto(user);
@@ -130,12 +140,18 @@ private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public UserDto getUserByEmail(String email) {
+
+        logger.info("Fetching user by email: {}", email);
+
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with given email id !"));
         return entityToDto(user);
     }
 
     @Override
     public List<UserDto> searchUser(String keyword) {
+
+        logger.info("Searching users by keyword: {}", keyword);
+
         List<User> users = userRepository.findByNameContaining(keyword);
         List<UserDto> dtoList = users.stream().map(user->entityToDto(user)).collect(Collectors.toList());
         return dtoList;
