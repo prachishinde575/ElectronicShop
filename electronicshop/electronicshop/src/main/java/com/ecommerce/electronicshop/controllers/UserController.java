@@ -43,8 +43,8 @@ public class UserController {
     @Value("${user.profile.image.path}")
     private String imageUploadPath;
 
+    //Logger
     private Logger  logger = LoggerFactory.getLogger(UserController.class);
-
 
     //create
     @PostMapping
