@@ -18,7 +18,7 @@ public interface CategoryService {
 
 
     //get all users
-    PageableResponse<CategoryDto> getall(int pageNumber, int pageSize, String sortBy, String sortDir);
+    PageableResponse<CategoryDto> getAll(int pageNumber, int pageSize, String sortBy, String sortDir);
 
 
     //get single category detail
